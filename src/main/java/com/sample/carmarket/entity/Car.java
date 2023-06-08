@@ -6,13 +6,16 @@ import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.UUID;
 
 @JmixEntity
 @Table(name = "CAR", indexes = {
-        @Index(name = "IDX_CAR_MODEL", columnList = "MODEL_ID"),
-        @Index(name = "IDX_CAR_REGNUMB", columnList = "REGISTRATION_NUMBER", unique = true)
+        @Index(name = "IDX_CAR_MODEL", columnList = "MODEL_ID")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "IDX_CAR_REGNUMB", columnNames = {"REGISTRATION_NUMBER"})
 })
 @Entity
 public class Car {
@@ -21,6 +24,7 @@ public class Car {
     @Id
     private UUID id;
 
+
     @Column(name = "REGISTRATION_NUMBER", length = 6)
     private String registrationNumber;
 
@@ -28,6 +32,8 @@ public class Car {
     @ManyToOne(fetch = FetchType.LAZY)
     private Model model;
 
+    @Max(message = "Максимальное значение года: 2030", value = 2030)
+    @Min(message = "Минимальное значение года: 1990", value = 1990)
     @Column(name = "PRODUCTION_YEAR")
     private Integer productionYear;
 
