@@ -33,14 +33,25 @@ public class ManufacturerBrowse extends MasterDetailScreen<Manufacturer> {
     public void onTableCalculateCarsAction(Action.ActionPerformedEvent event) {
         Manufacturer manufacturer = getTable().getSingleSelected();
 
-        System.out.println("manNaaaaaaaaame: " + manufacturer);
 
+        List<KeyValueEntity> allCars = dataComBean.countAllCars(manufacturer);
+        String countElectricCars="0";
+        String countGasolineCars="0";
 
+        for (KeyValueEntity item: allCars){
+            Object type = item.getValue("type");
+            Object amount = item.getValue("amount");
+            if(EngineType.fromId(type.toString()) == EngineType.ELECTRIC){
+                countElectricCars= amount.toString();
+            }
+            else if(EngineType.fromId(type.toString()) == EngineType.GASOLINE){
+                countGasolineCars= amount.toString();
+            }
+          }
 
-            notifications.create().withCaption("Electric cars: "
-                                                + dataComBean.countElCars(manufacturer)
-                                                + "gasoline cars: "
-                                                + dataComBean.countGasCars(manufacturer));
+        notifications.create().withCaption("Electric cars: " + countElectricCars
+                                            + "; gasoline cars: " + countGasolineCars)
+                                .show();
 
     }
 }

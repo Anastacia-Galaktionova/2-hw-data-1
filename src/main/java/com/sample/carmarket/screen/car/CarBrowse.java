@@ -37,7 +37,6 @@ public class CarBrowse extends StandardLookup<Car> {
         else {
             UUID carId = carsTable.getSingleSelected().getId();
             Car selectedCar = dataManager.load(Car.class).id(carId).one();
-            System.out.println("selectedCar.getStatus(): "+selectedCar.getStatus());
             selectedCar.setStatus(Status.SOLD);
             selectedCar.setDateOfSale(Calendar.getInstance().getTime());
             dataManager.save(selectedCar);
