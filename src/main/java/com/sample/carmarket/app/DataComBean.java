@@ -30,4 +30,14 @@ public class DataComBean {
                 .list();
         return countCarsGasoline.size();
     }
+
+    public List<KeyValueEntity> countAllCars(Manufacturer manufacturer){
+        List<KeyValueEntity> countCars = dataManager.loadValues("select e.model.engineType, count(e) from Car e where e.model.manufacturer = :manufac group by e.model.engineType")
+                .parameter("manufac", manufacturer)
+                .properties("type","amount")
+                .list();
+
+        return countCars;
+
+    }
 }
